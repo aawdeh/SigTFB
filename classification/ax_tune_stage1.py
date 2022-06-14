@@ -89,7 +89,6 @@ torch_seed(12345)
 dtype = torch.float
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 args.device = device
-print(device)
 args, dl, dataset, test_set = load_data(args)
 args.one_hot_dict, args.cl_dict = dl.getOneHotDictCL()
 
@@ -147,6 +146,7 @@ ax_client.create_experiment(
 for i in range(15):
     parameters, trial_index = ax_client.get_next_trial()
     ax_client.complete_trial(trial_index=trial_index, raw_data=train_evaluate(parameters))
+    
 #####################################################################################
 # 4. Get best parameters
 #####################################################################################
