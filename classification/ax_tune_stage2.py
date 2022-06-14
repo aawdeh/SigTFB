@@ -33,34 +33,6 @@ args.balancedSampler = eval(args.balancedSampler)
 args.upsampleRows = eval(args.upsampleRows)
 args.attribution = eval(args.attribution)
 
-if False:
-    #ATF1.ENCAB697XQW.pth.tar
-    args.TF = "YY1"#"ATF7"
-    args.AB = "ENCAB000ANT"#"ENCAB000BMO"
-    args.chipData = "/project/6006657/aaseel/Aim2/Data/ChIP/Redo_Others/hdf5Files_TestSplit/" + args.TF + "/" + args.TF + "." + args.AB + ".h5"
-    args.rnaData = '/project/6006657/aaseel/Aim2/Data/RNA/NotNormalized_EC_Transcript.h5'
-
-    args.model_stage1_path = "/home/aaseel/projects/def-tperkins/aaseel/Aim2/Results/Ax/Stage1/ACC_SAMPLER_CUSTOM/Models/" + args.TF + "." + args.AB + ".pth.tar"
-    args.hyperparameterPath = "/home/aaseel/projects/def-tperkins/aaseel/Aim2/Results/Ax/Stage1/ACC_SAMPLER_CUSTOM/Hyperparameters"
-    args.saveModelPath = "/project/6006657/aaseel/Aim2/Results/Ax/Stage2/ACC_SAMPLER_CUSTOM/noCA/Models/SplitPerRun/AUC"
-
-    args.saveModelPath="/project/6006657/aaseel/Aim2/Results/Ax/Stage2/ACC_SAMPLER_CUSTOM/noCA/AUPRC/Models/AllHyperparameters/PartTrain"
-    args.idxPath="/project/6006657/aaseel/Aim2/Results/Ax/Stage2/ACC_SAMPLER_CUSTOM/noCA/AUPRC/Indexes"
-
-    args.typeChIP = "two"
-    args.RNA_Random = 'E'
-    args.typeRNA = "transcript_id"
-    args.TestingType = 'OneUnit_Stage2'
-    args.batch_size = 4
-    args.balancedSampler = False
-    args.customSampler = True
-
-    args.withATAC = False #there are some chipseqs with no atacseq
-    args.withRNA = False
-    args.attribution = False
-    args.rc = False
-    args.unique = False
-
 print("Ax Hyperparameter Optimization :: Stage 2 :: " + args.TF + "." + args.AB)
 #####################################################################################
 # Define search space
@@ -145,12 +117,11 @@ torch_seed(12345)
 dtype = torch.float
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 args.device = device
-print(device)
+
 #####################################################################################
 # 1. Load Data
 #####################################################################################
 args, dl, dataset, test_set = load_data(args)
-#train_idx, validate_idx, train_loader, valid_loader, test_loader = set_dataLoaders_sampler(dataset, test_set, args)
 
 #####################################################################################
 # 2. Define function to optimize
@@ -181,7 +152,6 @@ def train_evaluate(parameterization):
         print(args.TestingType)
         net = Net(model_stage1, args, checkpoint_stage1['size_conv_out']).to(device)
 
-    #overriding Ax suggestions?
     net.model_stage1.load_state_dict(checkpoint_stage1['state_dict']) #check this
     model_stage1 = model_stage1.to(device)
     model = train(net=net, dl=dl, train_loader=train_loader, parameters=parameterization, args=args, dtype=dtype, device=device)
