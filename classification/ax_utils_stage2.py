@@ -133,77 +133,6 @@ def evaluate(
 
 #####################################################################################
 
-def train_epoch_merged(
-    net: torch.nn.Module,
-    dl : LoadData,
-    train_loader: DataLoader,
-    args : Args,
-    dtype: torch.dtype,
-    device: torch.device,
-    optimizer: torch.optim,
-    criterion: torch.nn
-    ) -> [dict]:
-    """
-        Train CNN on data
-        Ask: Here we are first training the network with the one hot encoding concatenation.
-
-        Args:
-            RNA_Random == "test_both" in this case. This does NOT indicate that we are training on a Siamese network.
-            However, this indicaes that we are generating 2 different datasets for concatenation [Same, OneHot]
-
-            net: initialized neural network for stage 2
-            dl:
-            train_loader: DataLoader containing training set
-            args: dictionary of other parameters
-            dtype: torch dtype
-            device: torch device
-
-        Returns:
-            nn.Module: trained CNN.
-    """
-    print("Train epoch")
-
-    #Evaluation metrics
-    LossOverall = AverageMeter()
-    AccuracyOverall = AverageMeter()
-    F1ScoreOverall = AverageMeter()
-    PrecisionOverall = AverageMeter()
-    RecallOverall = AverageMeter()
-    AUCOverall = AverageMeter()
-
-    all_preds=[]
-    all_targets=[]
-
-    #Initialize network
-    net.to(dtype=dtype, device=device)
-    net.train()
-
-    for i, batch_unit in enumerate(train_loader):
-        ChIPseq_batch, rnaCount_batch, atac_labels, labels = getData(dl, batch_unit, args, type="train")
-
-        optimizer.zero_grad()
-        predicted_outputs = net(ChIPseq_batch, rnaCount_batch, atac_labels)
-        loss = criterion(predicted_outputs, labels.long())
-        loss.backward()
-        optimizer.step()
-
-        #Statistics -- make function
-        accuracy, F1_score, precision, recall = accuracy_eval(predicted_outputs, labels, args, stage=2)
-        AccuracyOverall.update(accuracy, args.batch_size)
-        LossOverall.update(loss.item(), args.batch_size)
-        F1ScoreOverall.update(F1_score, args.batch_size)
-        PrecisionOverall.update(precision, args.batch_size)
-        RecallOverall.update(recall, args.batch_size)
-        all_targets = np.concatenate((all_targets, labels.cpu().data.numpy()))
-        all_preds = np.concatenate((all_preds, torch.index_select(predicted_outputs.cpu(), 1, torch.tensor([1])).view(-1).data.numpy()))
-
-    auc = roc_auc_score_modified(all_targets, all_preds)
-    auprc = sklearn.metrics.average_precision_score(all_targets, all_preds)
-    metrics = {"loss": LossOverall.avg, "F1Score":F1ScoreOverall.avg, "Accuracy":AccuracyOverall.avg, "Precision":PrecisionOverall.avg,
-                "Recall":RecallOverall.avg, "AUC":auc, "AUPRC":auprc}
-    return metrics
-
-#####################################################################################
 def evaluate_epoch_merged_both(
     net: nn.Module,
     dl: LoadData,
@@ -292,6 +221,7 @@ def evaluate_epoch_merged_both(
     return all_targets, all_pred_dict, metrics_dict
 
 #####################################################################################
+
 def getRNAandChIP(args, dl, ChIPseq_batch, labels, atac_labels=None, type=None):
     """
     returns: <'torch.Tensor'>,<'torch.Tensor'>,<'torch.Tensor'>,<'torch.Tensor'>
