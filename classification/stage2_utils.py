@@ -17,11 +17,10 @@ import numpy as np
 # ------------------------------------
 # own modules
 # ------------------------------------
-path.append("/project/6006657/aaseel/Aim2/Scripts_GithubEdition")
-from DNN.misc import AverageMeter
-from DNN.evaluationMetrics import accuracy_eval, roc_auc_score_modified
-from DNN.loadData import LoadData
-from DNN.args import getArgs_Stage2 as Args
+from utils.misc import AverageMeter
+from utils.evaluationMetrics import accuracy_eval, roc_auc_score_modified
+from utils.loadData import LoadData
+from utils.args import getArgs_Stage2 as Args
 
 #####################################################################################
 
