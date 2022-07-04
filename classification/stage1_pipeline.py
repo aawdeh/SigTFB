@@ -12,7 +12,7 @@ from ax.service.ax_client import AxClient
 # ------------------------------------
 # own modules
 # ------------------------------------
-from stage1_utils import load_data, set_dataLoaders_sampler, train, evaluate, readHyperparameters, train_full, save_model
+from stage1_utils import load_data, set_dataLoaders_sampler, train, evaluate
 from stage2_trainfull import saveModels
 from utils.utils import basset_loss as criterion_basset
 from utils.utils import torch_seed
