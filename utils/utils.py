@@ -25,10 +25,8 @@ from torch.utils.data import DataLoader
 # ------------------------------------
 # own modules
 # ------------------------------------
-path.append("/project/6006657/aaseel/Aim2/Scripts/")
-path.append('/project/6006657/aaseel/Aim2/SW/ChromDragoNN/pytorch_classification/utils')
-from DNN.misc import AverageMeter
-from DNN.evaluationMetrics import mse_eval, accuracy_eval, roc_auc_score_modified, multilabel_eval
+from utils.misc import AverageMeter
+from utils.evaluationMetrics import mse_eval, accuracy_eval, roc_auc_score_modified, multilabel_eval
 
 ####################################################################################################################################
 # Set SEED
