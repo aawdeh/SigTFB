@@ -267,8 +267,7 @@ def train(
             loss.backward()
             optimizer.step()
             print("Epoch " + str(e) + ", Batch " + str(i) + ", loss " + str(loss.item()))
-            break
-        break
+            
     return net, new_size
 
 #####################################################################################
@@ -341,7 +340,7 @@ def evaluate(
 
             all_preds.append(predicted_outputs.cpu().data.numpy())
             all_targets.append(labels.cpu().data.numpy())
-            break
+                
         print("Batch " + str(i) + ", loss " + str(loss.item()))
 
     all_targets = np.concatenate(all_targets, axis=0)
