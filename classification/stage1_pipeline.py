@@ -13,6 +13,7 @@ from ax.service.ax_client import AxClient
 # own modules
 # ------------------------------------
 from stage1_utils import load_data, set_dataLoaders_sampler, train, evaluate, readHyperparameters, train_full, save_model
+from stage2_trainfull import saveModels
 from utils.utils import basset_loss as criterion_basset
 from utils.utils import torch_seed
 from models.stage1Model import CNN_Multilabel as Net
@@ -162,5 +163,6 @@ ax_client.get_trials_data_frame().sort_values('trial_index').to_csv(os.path.join
 #####################################################################################
 # 5. Train model with best hyperparameters
 #####################################################################################
-model_best, size_conv_best, args_best = train_full(best_parameters, args, dataset, test_set)
-save_model(model_best, size_conv_best, args_best)
+saveModels(args, best_parameters)
+#model_best, size_conv_best, args_best = train_full(best_parameters, args, dataset, test_set)
+#save_model(model_best, size_conv_best, args_best)
