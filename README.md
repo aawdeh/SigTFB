@@ -1,4 +1,4 @@
-# SigTFB: Cell Type Specific DNA Signatures of Transcription Factor Binding
+# SigTFB: Cell Type Specific DNA Signatures of Transcription Factor Binding (Work in progress)
 
 This repository contains code for our paper "Cell Type Specific DNA Signatures of Transcription Factor Binding". The models are implemented in PyTorch.
 
