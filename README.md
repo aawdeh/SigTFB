@@ -4,7 +4,7 @@ This repository contains code for our paper "Cell Type Specific DNA Signatures o
 
 ## Data
 
-All associated data from our paper can be downloaded from [here]()
+All associated data from our paper can be downloaded from [here](https://doi.org/10.20383/103.0605)
 
 ### Preparing ChIP-seq data for each transcription factor (TF) and antibody (AB) across their corresponding cell types (CLs)
 
