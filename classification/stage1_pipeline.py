@@ -12,13 +12,11 @@ from ax.service.ax_client import AxClient
 # ------------------------------------
 # own modules
 # ------------------------------------
-path.append("/project/6006657/aaseel/Aim2/Scripts_GithubEdition")
-#import stage1_utils
 from stage1_utils import load_data, set_dataLoaders_sampler, train, evaluate, readHyperparameters, train_full, save_model
-from DNN.utils import basset_loss as criterion_basset
-from DNN.utils import torch_seed
-from DNN.Models.stage1Model import CNN_Multilabel as Net
-from DNN.args import getArgs_Stage1 as getArgs
+from utils.utils import basset_loss as criterion_basset
+from utils.utils import torch_seed
+from models.stage1Model import CNN_Multilabel as Net
+from utils.args import getArgs_Stage1 as getArgs
 
 #####################################################################################
 # Hyperparameters
@@ -28,30 +26,6 @@ args.shuffle = eval(args.shuffle)
 args.unique = eval(args.unique)
 args.customSampler = eval(args.customSampler)
 args.customSampler_OneLoss = eval(args.customSampler_OneLoss)
-
-if True:
-    args.TF = "ATF3"
-    args.AB = "ENCAB000ADZ"
-    args.chipData = "/project/6006657/aaseel/Aim2/Data/ChIP/Redo_Others/hdf5Files_TestSplit/ATF3/ATF3.ENCAB000ADZ.h5"
-    #args.chipData = "/project/6006657/aaseel/Aim2/Data/ChIP/ChIPseq_hdf5Files_CLName_withATAC/" + args.TF + "/" + args.TF + "." + args.AB + ".h5"
-    #args.chipData = "/project/6006657/aaseel/Aim2/Data/Test_Files/hdf5Files/" + args.TF + "/" + args.TF + "." + args.AB + ".h5"
-
-    args.typeChIP = "two"
-    args.Encoding_Random = 'E' #half time general half time specific
-    args.TestingType = 'OneUnit_Stage2'
-    args.num_epochs = 1
-    args.batch_size = 4 #needs to be a multiple of the number of celllines
-
-    args.customSampler = True
-    args.customSampler_OneLoss = True
-
-    # 6 conditions were testing for
-    args.shuffle = False
-    args.upsampleRows = False
-    args.unique = False
-
-    # 2 losses : bce and basset
-    args.lossFunction = "BASSET"
 
 print(args)
 print("Ax Hyperparameter Optimization :: Stage 1 :: " + args.TF + "." + args.AB)
