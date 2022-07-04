@@ -14,7 +14,6 @@ class Net_Stage2(nn.Module):
         self.num_units = args.num_units
         self.neurons_per_layer_pre_concat = args.neurons_per_layer_pre_concat
         self.neurons_per_layer = args.neurons_per_layer
-        self.attribution = args.attribution
 
         # freezing basset_model parameters and setting to eval mode
         if args.freeze_pretrained_model:
