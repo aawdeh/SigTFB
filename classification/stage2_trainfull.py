@@ -11,11 +11,10 @@ from pathlib import Path
 # ------------------------------------
 # own modules
 # ------------------------------------
-path.append("/project/6006657/aaseel/Aim2/Scripts")
-from AxPytorch.Stage2.ax_utils_stage2 import train
-from AxPytorch.Stage1.ax_utils_stage1 import load_data, set_dataLoaders_cv_sampler, set_dataLoaders_sampler
-from DNN.utils import load_model_checkpoint, getIndex, torch_seed
-from DNN.Models.Stage2.stage2Model import Net_Stage2
+from stage2_utils import train
+from stage1_utils import load_data, set_dataLoaders_sampler
+from utils.utils import load_model_checkpoint, getIndex, torch_seed
+from models.stage2Model import Net_Stage2
 
 #####################################################################################
 # set parameters
@@ -23,7 +22,7 @@ from DNN.Models.Stage2.stage2Model import Net_Stage2
 dtype = torch.float
 
 #####################################################################################
-# 3. Train on full training set
+# Train on full training set
 #####################################################################################
 def train_full(args, parameterization, dl, train_loader):
     args.linear_std = parameterization.get('linear_std',1.0)
@@ -49,35 +48,22 @@ def train_full(args, parameterization, dl, train_loader):
     return model, args
 
 #####################################################################################
-# 3. Save model
-#####################################################################################
-def save_model(model, args, type):
-    """
-        type could be using all training set or using part of training set
-        "AllTrain" or "PartTrain"
-    """
-    print("Ax Train :: Stage 2 :: Save model for run " + str(args.trial_index) + ".")
-    print(args)
-    state = {'state_dict': model.state_dict(),
-             'args': args,
-             'model': model}
-
-    Path(os.path.join(args.saveModelPath, type, args.TF, args.AB)).mkdir(parents=True, exist_ok=True)
-    torch.save(state, os.path.join(args.saveModelPath, type, args.TF, args.AB, args.TF + "." + args.AB + "." + str(int(args.trial_index)) +'.pth.tar'))
-
-#####################################################################################
-# 4. Train and save
+# Train and save
 #####################################################################################
 def saveModels(args, parameterization):
-    """
-    """
-    print("Ax Train :: Stage 2 :: Save model")
+    print("Ax Train :: Save model")
     torch_seed(12345)
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     args.device = device
 
-    print("Ax Train :: Stage 2 :: Set DataLoaders best hyperparameters.")
+    print("Ax Train :: Set DataLoaders best hyperparameters.")
     args, dl, dataset, test_set = load_data(args)
     train_idx, validate_idx, train_loader, valid_loader, test_loader = set_dataLoaders_sampler(dataset, test_set, args)
     model_part, args = train_full(args, parameterization, dl, train_loader)
-    save_model(model_part, args, "PartTrain")
+    
+    state = {'state_dict': model.state_dict(),
+             'args': args,
+             'model': model}
+    
+    Path(os.path.join(args.saveModelPath, args.TF, args.AB)).mkdir(parents=True, exist_ok=True)
+    torch.save(state, os.path.join(args.saveModelPath, args.TF, args.AB, args.TF + "." + args.AB + '.pth.tar'))
