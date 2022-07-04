@@ -11,13 +11,12 @@ from ax.service.ax_client import AxClient
 # ------------------------------------
 # own modules
 # ------------------------------------
-path.append("/project/6006657/aaseel/Aim2/Scripts_GithubEdition")
-from AxPytorch.Stage2.stage2_utils import train, evaluate
-from AxPytorch.Stage1.stage1_utils import load_data, set_dataLoaders_sampler
-from DNN.utils import load_model_checkpoint, save_model, torch_seed, saveIndex
-from DNN.Models.Stage2.stage2Model import Net_Stage2
-from AxPytorch.Stage2.ax_trainFull_stage2_other import saveModels
-from DNN.args import getArgs_Stage2 as getArgs
+from stage2_utils import train, evaluate
+from stage1_utils import load_data, set_dataLoaders_sampler
+from utils.utils import load_model_checkpoint, save_model, torch_seed, saveIndex
+from models.stage2Model import Net_Stage2
+from stage2_trainfull import saveModels
+from utils.args import getArgs_Stage2 as getArgs
 
 #####################################################################################
 # Hyperparameters
@@ -28,22 +27,6 @@ args.unique = eval(args.unique)
 args.upsampleRows = eval(args.upsampleRows)
 args.customSampler = eval(args.customSampler)
 args.customSampler_OneLoss = eval(args.customSampler_OneLoss)
-
-if True:
-    #ATF1.ENCAB697XQW.pth.tar
-    args.TF = "ATF7"
-    args.AB = "ENCAB000BMO"
-    args.chipData = "/project/6006657/aaseel/Aim2/Data/ChIP/hdf5Files_TestSplit/" + args.TF + "/" + args.TF + "." + args.AB + ".h5"
-
-    args.model_stage1_path = "/home/aaseel/projects/def-tperkins/aaseel/Aim2/Results/Ax/Stage1/ACC_SAMPLER_CUSTOM/Models/" + args.TF + "." + args.AB + ".pth.tar"
-    args.saveModelPath="/project/6006657/aaseel/Aim2/Results/Ax/Stage2/ACC_SAMPLER_CUSTOM/noCA/AUPRC/Models/AllHyperparameters/PartTrainTest"
-
-    args.typeChIP = "two"
-    args.Encoding_Random = 'E'
-    args.batch_size = 4
-
-    args.rc = False
-    args.unique = False
 
 print("Ax Hyperparameter Optimization :: Stage 2 :: " + args.TF + "." + args.AB)
 #####################################################################################
@@ -185,7 +168,7 @@ ax_client.create_experiment(
 
 print(ax_client)
 
-for i in range(2):
+for i in range(15):
     parameters, trial_index = ax_client.get_next_trial()
     args.trial_index = trial_index
     print(parameters)
@@ -206,11 +189,11 @@ means, covariances = values
 print(means)
 print(covariances)
 
-# with open(os.path.join(args.hyperparameterPath, "hyperparameters.txt"), "w") as f:
-#     f.write( "AUC," + str(means['train_evaluate']) + "\n")
-#     for k in best_parameters.items():
-#         f.write(str(k[0]) +"," + str(k[1]) + "\n")
-# f.close()
+with open(os.path.join(args.hyperparameterPath, "hyperparameters.txt"), "w") as f:
+     f.write( "AUC," + str(means['train_evaluate']) + "\n")
+     for k in best_parameters.items():
+         f.write(str(k[0]) +"," + str(k[1]) + "\n")
+f.close()
 
 print(ax_client.get_trials_data_frame().sort_values('trial_index').to_string())
 ax_client.get_trials_data_frame().sort_values('trial_index').to_csv(os.path.join(args.hyperparameterPath, "dataframe.csv"), index=False)
