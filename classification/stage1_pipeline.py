@@ -24,6 +24,7 @@ from utils.args import getArgs_Stage1 as getArgs
 args = getArgs()
 args.shuffle = eval(args.shuffle)
 args.unique = eval(args.unique)
+args.upsampleRows = eval(args.upsampleRows)
 args.customSampler = eval(args.customSampler)
 args.customSampler_OneLoss = eval(args.customSampler_OneLoss)
 
