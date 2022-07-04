@@ -21,24 +21,15 @@ from sklearn.metrics import average_precision_score
 # ------------------------------------
 # own modules
 # ------------------------------------
-path.append("/project/6006657/aaseel/Aim2/Scripts_GithubEdition")
-from DNN.misc import AverageMeter
-from DNN.evaluationMetrics import mse_eval, accuracy_eval, roc_auc_score_modified, multilabel_accuracy, calculate_accuracy
-from DNN.loadData import LoadData, H5Dataset
-from DNN.utils import load_model_checkpoint, basset_loss as criterion_basset
-from DNN.args import getArgs_Stage1 as Args
-from DNN.fasta_dinucleotide_shuffle import dinuclShuffle
-from DNN.utils import torch_seed
-from DNN.Models.stage1Model import CNN_Multilabel as Net
-
-path.append("/project/6006657/aaseel/Aim2/SW/pytorch-multilabel-balanced-sampler")
-from sampler_multilablel_modified import MultilabelBalancedRandomSampler as MultilabelBalancedRandomSamplerCustom
-#####################################################################################
-# load_data
-# set_dataLoaders
-# train
-# evaluate
-#####################################################################################
+from utils.misc import AverageMeter
+from utils.evaluationMetrics import mse_eval, accuracy_eval, roc_auc_score_modified, multilabel_accuracy, calculate_accuracy
+from utils.loadData import LoadData, H5Dataset
+from utils.utils import load_model_checkpoint, basset_loss as criterion_basset
+from utils.args import getArgs_Stage1 as Args
+from utils.fasta_dinucleotide_shuffle import dinuclShuffle
+from utils.utils import torch_seed
+from models.stage1Model import CNN_Multilabel as Net
+from utils.sampler_multilablel_modified import MultilabelBalancedRandomSampler as MultilabelBalancedRandomSamplerCustom
 
 #####################################################################################
 # Load data
