@@ -1,4 +1,4 @@
-# DNASig: Cell Type Specific DNA Signatures of Transcription Factor Binding
+# SigTFB: Cell Type Specific DNA Signatures of Transcription Factor Binding
 
 This repository contains code for our paper "Cell Type Specific DNA Signatures of Transcription Factor Binding". The models are implemented in PyTorch.
 
@@ -17,10 +17,18 @@ All associated data from our paper can be downloaded from [here](https://www.you
 
 
 ## Model Training 
+We train a model for each TF-AB pair. 
 
 ### Stage 1
+The stage 1 models predict TF binding across corresponding cell types for a specific TF-AB pair. The ``models`` directory contains the model (CNN_Multilabel) for stage 1 training. This function uses the Ax hyperparameter optimizer to select the best hyperparameters for the TF-AB model. Then trains the model using the best hyperparameters.
 
-
+``python classification/stage1_pipeline.py --TF $TF --AB $AB 
+                                          --chipData $chipData
+                                          --hyperparameterPath $hyperparameterPath 
+                                          --saveModelPath $saveModelPath``
+       
+ For other inputs, refer to:     
+``python stage1_pipeline.py --help``     
 
 ### Stage 2
 
