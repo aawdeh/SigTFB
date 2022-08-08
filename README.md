@@ -43,5 +43,6 @@ Using the pretrained stage 1 model for a specific TF-AB pair, the stage 2 model 
 ``python stage2_pipeline.py --help``     
 
 ## Citation
-If you use this code for your research, please cite our paper:
+If you use this code for your research, please cite our [paper](https://www.biorxiv.org/content/10.1101/2022.07.15.500259v1):
 
+Awdeh, Aseel, Marcel Turcotte, and Theodore J. Perkins. "Cell Type Specific DNA Signatures of Transcription Factor Binding." bioRxiv (2022).
