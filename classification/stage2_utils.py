@@ -72,8 +72,7 @@ def train(
             loss.backward()
             optimizer.step()
             print("Epoch " + str(e) + ", Batch " + str(i) + ", loss " + str(loss.mean().item()))
-            break
-        break
+  
     return net
 
 #####################################################################################
@@ -117,7 +116,7 @@ def evaluate(
 
             all_targets = np.concatenate((all_targets, labels.cpu().data.numpy()))
             all_preds = np.concatenate((all_preds, torch.index_select(predicted_outputs.cpu(), 1, torch.tensor([1])).view(-1).data.numpy()))
-            break
+
         auc = roc_auc_score_modified(all_targets, all_preds)
         auprc = sklearn.metrics.average_precision_score(all_targets, all_preds)
         print("Batch " + str(i) + ", auprc " + str(auprc))
